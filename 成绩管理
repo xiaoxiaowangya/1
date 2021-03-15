@@ -1,0 +1,526 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int z=1,x=1;//z表示班级x表示人数
+int V[101]={0};//表示每个班级人数
+int X(int a,int b);
+int put_out(int a,int b);
+struct class1
+{
+    struct student
+    {
+        int id;
+        char *name;
+        float math;//高数
+        float Chinese;//语文
+        float english;//英语
+        float c;//c语言
+        float PE;//体育
+        float ave;
+        float total;
+    }student[100];
+}class1[100];
+int tyep_in()//录入信息函数
+{
+    int i=0;
+    printf("    信息录入\n");
+    printf("    =======\n");
+    printf("注意：学号格式为‘班级+学号’，如‘一班一号’为：1001\n");
+    printf("注意：输入姓名时不允许存在空格，否则学生姓名可能出错！\n");
+    printf("请输入班级个数：");
+    scanf("%d",&i);
+    for(int j=1;j<=i;j++,z++)
+    {
+        int m=0;
+        printf("请输入%d班的人数：",j);
+        scanf("%d",&m);
+        V[j]=m;
+        for(int n=1;n<=m;n++,x++)
+        {
+            int Q=0;
+            char *name=(char*)malloc(100);
+            if(NULL!=name)
+            {
+                float math=0,chinese=0,english=0,C=0,PE=0;
+                start:
+                printf("请输入第%d个学生的学号：",n);
+                scanf("%d",&Q);
+                if (Q<=1000)
+                {
+                    printf("学号格式错误，请重新输入！\n");
+                    goto start;               
+                }
+                printf("请输入第%d位学生的姓名：",n);
+                scanf("%s",name);
+                printf("请输入第%d位学生数学成绩：",n);
+                scanf("%f",&math);
+                printf("请输入第%d位学生语文成绩：",n);
+                scanf("%f",&chinese);
+                printf("请输入第%d位学生英语成绩：",n);
+                scanf("%f",&english);
+                printf("请输入第%d位学生的C语言成绩：",n);
+                scanf("%f",&C);
+                printf("请输入第%d位学生体育成绩：",n);
+                scanf("%f",&PE);
+                class1[j].student[n].id=Q;
+                class1[j].student[n].name=name;
+                class1[j].student[n].math=math;
+                class1[j].student[n].Chinese=chinese;
+                class1[j].student[n].english=english;
+                class1[j].student[n].c=C;
+                class1[j].student[n].PE=PE;
+                X(j,n); 
+            }
+        }
+    }
+    z=z-1;
+    x=x-1;
+    system("pause");
+    system("cls");//清屏
+}
+int X(int a,int b)
+{
+    class1[a].student[b].total=class1[a].student[b].math+class1[a].student[b].Chinese+class1[a].student[b].english+class1[a].student[b].c+class1[a].student[b].PE;
+    class1[a].student[b].ave=class1[a].student[b].total/5;
+}
+int alter()//修改函数
+{
+    
+    int w=0,t=0,i=0,k=0;
+    printf("    修改学生信息\n");
+    printf("    ===========\n");
+    printf("请输入要修改学生的班级：");
+    scanf("%d",&w);
+    printf("请输入要修改学生的学号(注意：学号格式为‘班级+学号’，如‘一班一号’为：1001)\n");
+    scanf("%d",&t);
+    int l=t%1000;
+    printf("请选择要修改前学生信息：\n");
+    put_out(w,l);
+    system("cls");
+    start:
+    printf("   =============\n");
+    printf("   |1.高数成绩 |\n");
+    printf("   |2.语文成绩 |\n");
+    printf("   |3.英语成绩 |\n");
+    printf("   |4.c语言成绩|\n");
+    printf("   |5.体育成绩 |\n");
+    printf("   =============\n");
+    printf("请输入要修改内容：");
+    scanf("%d",&i);
+    switch (i)
+    {
+    case 1:
+        {
+            printf("请输入学生高数成绩：");
+            float a=0;
+            scanf("%f",&a);
+            class1[w].student[l].math=a;
+            break;
+        }
+    case 2:
+        {
+            printf("请输入学生语文成绩：");
+            float a=0;
+            scanf("%f",&a);
+            class1[w].student[l].Chinese=a;
+            break;
+        }
+    case 3:
+        {
+            printf("请输入学生英语成绩：");
+            float a=0;
+            scanf("%f",&a);
+            class1[w].student[l].english=a;
+            break;
+        }
+    case 4:
+        {
+            printf("请输入学生c语言成绩：");
+            float a=0;
+            scanf("%f",&a);
+            class1[w].student[l].c=a;
+            break;
+        }
+    case 5:
+        {
+            printf("请输入学生体育成绩：");
+            float a=0;
+            scanf("%f",&a);
+            class1[w].student[l].PE=a;
+            break;
+        }
+    }
+    printf("修改后学生信息为：\n");
+    put_out(w,l);
+    printf("是否继续修改：\n"
+           "1.是\n"
+           "2.否\n");
+           scanf("%d",&k);
+           switch (k)
+           {
+               case 1:
+               {
+                   goto start;
+                   break;
+               }
+               case 2:
+               {
+                   break;
+               }
+           }
+    system("pause");
+    system("cls");
+}
+int delete1()//删除函数
+{
+    int G=0,R=0;
+    printf("    删除学生信息\n");
+    printf("    ===========\n");
+    printf("请输入要删除的学生班级：");
+    scanf("%d",&G);
+    if (V[G]==1)
+    {
+        put_out(G,1);
+        printf("是否要删除此学生信息?\n"
+               "1.是\n"
+               "2.否\n");
+        int u=0;
+        scanf("%d",&u);
+        if(u==1)
+        {
+            class1[G].student[u]=class1[G].student[u+1];
+            x=x-1;
+            V[G]=V[G]-1;
+        }
+    }
+    else if(V[G]>1)
+    {
+        printf("请输入要删除%d班学生的学号：\n",G);
+        printf("注意：(注意：学号格式为‘班级+学号’，如‘一班一号’为：1001)\n");
+        scanf("%d",&R);
+        int l=R%1000;
+        for(;l<V[G];l++)
+        {
+            class1[G].student[R]=class1[G].student[R+1];
+        }
+        V[G]=V[G]-1;
+        x-=1;
+    }
+    system("pause");
+    system("cls");
+}
+int count_total_ave()//计算总分、平均分
+{
+    printf("    每位学生总成绩\n");
+    printf("    =============\n");
+    for(int p=1;p<=z;p++)
+    {
+        for(int p1=1;p1<=V[p];p1++)
+        {
+            printf("%d\t%s\t%.2f\n",class1[p].student[p1].id,class1[p].student[p1].name,class1[p].student[p1].total);
+        }
+    }
+    printf("    每位学生平均分\n");
+    printf("    =============\n");
+    for(int p=1;p<=z;p++)
+    {
+        for(int p1=1;p1<=V[p];p1++)
+        {
+            printf("%d\t%s\t%.2f\n",class1[p].student[p1].id,class1[p].student[p1].name,class1[p].student[p1].ave);
+        }
+    }
+    system("pause");
+    system("cls");
+}
+int add()//添加学生信息
+{
+    printf("    添加学生信息\n");
+    printf("    ===========\n");
+    int o=0,n=0;
+    printf("请输入添加学生的班级：");
+    scanf("%d",&o);
+    n=V[o]+1;
+    int id=0;
+    char *name=(char*)malloc(20);
+    float math=0;
+    float chinese=0;
+    float english=0;
+    float c=0;
+    float PE=0;
+    printf("请输入学生学号：");
+    scanf("%d",&id);
+    printf("请输入学生姓名：");
+    scanf("%s",name);
+    printf("请输入高数成绩：");
+    scanf("%f",&math);
+    printf("请输入语文成绩：");
+    scanf("%f",&chinese);
+    printf("请输入英语成绩：");
+    scanf("%f",&english);
+    printf("请输入c语言成绩：");
+    scanf("%f",&c);
+    printf("请输入体育成绩：");
+    scanf("%f",&PE);
+    class1[o].student[n].id=id;
+    class1[o].student[n].name=name;
+    class1[o].student[n].math=math;
+    class1[o].student[n].Chinese=chinese;
+    class1[o].student[n].english=english;
+    class1[o].student[n].c=c;
+    class1[o].student[n].PE=PE;    
+    V[o]=V[o]+1;
+    system("pause");
+    system("cls");
+}
+int Query_by_mame_or_number()//按姓名或学号查询学生成绩
+{
+    printf("    按姓名或学号查询学生成绩\n");
+    printf("    ======================\n");
+    printf("1.姓名查询\n");
+    printf("2.学号查询\n");
+    int Y=0;
+    start:
+    scanf("%d",&Y);
+    if(Y==1)
+    {
+        char *str1[1024];
+        char str2[20];
+        int m=0;
+        int B[1024]={0},C[1024]={0};
+        int number=0;
+        printf("请输入要查询学生的姓名：");
+        scanf("%s",str2);
+        for(int i=1;i<=z;i++)
+        {
+            for(int j=1;j<=V[i];j++)
+            {
+                
+                str1[m]=class1[i].student[j].name;
+                B[m]=i;
+                C[m]=j;
+                m++;
+            }
+        }
+        for(int A=0;A<m;A++)
+        {
+            char str3[20];
+            strcpy(str3,str1[A]);
+            if(strcmp(str2,str3)==0)
+            {
+                put_out(B[A],C[A]);
+                number=1;
+            }
+        }
+        if(number==0)
+        {
+            printf("未找到此学生！\n");
+        }
+    }
+    else if(Y==2)
+    {
+        int W=0,L=0,K=0;
+        printf("注意：学号格式为‘班级+学号’，如‘一班一号’为：1001\n");
+        printf("请输入你要查询的学生学号：");
+        scanf("%d",&W);
+        int number=0;
+        for(int i=1;i<=z;i++)
+        {
+            for(int j=1;j<=V[i];j++)
+            {
+                if(W==class1[i].student[j].id)
+                {
+                    put_out(i,j);
+                    number=1;
+                    break;
+                }
+            }
+        }
+        if(number==0)
+        {
+            printf("未找到此学生！\n");
+        }
+    }
+    else
+    {
+        printf("输入错误！\n");
+        printf("请重新输入！\n");
+        goto start;
+    }
+    system("pause");
+    system("cls");
+}
+int Enquiry_by_Class()//按班级查询学生成绩
+{
+    int E=0;
+    printf("    班级查询学生成绩\n");
+    printf("    ===============\n");
+    printf("请输入要查询的班级：");
+    scanf("%d",&E);
+    for(int i=1;i<=V[E];i++)
+    {
+        put_out(E,i);
+    }
+    system("pause");
+    system("cls");
+}
+int Results_soring()//成绩排序
+{
+    int i,j,o=0;
+    printf("    成绩排序\n");
+    printf("    =======\n");
+    printf("请输入班级：");
+    scanf("%d",&o);
+    for(i=1;i<=V[o];i++)
+    {
+        for(j=i;j<=V[o];j++)
+        {
+            if(class1[o].student[i].total<class1[o].student[j].total)
+            {
+            struct student temp=class1[o].student[i];
+            class1[o].student[i]=class1[o].student[j];
+            class1[o].student[j]=temp;
+            }
+        }
+    } 
+    for(int f=1;f<=V[o];f++)
+    {   
+        printf("第%d名学生：\n",f);
+        put_out(o,f);
+    }
+    system("pause");
+    system("cls");
+}
+int statistics()//按班级统计学科总分，平均分
+{
+    int l=0;
+    float sum1=0,sum2=0,sum3=0,sum4=0,sum5=0;
+    printf("    安装班级统计学科总分、平均分\n");
+    printf("    ==========================\n");
+    printf("请输入要统计的班级：");
+    scanf("%d",&l);
+    for (int i=1;i<=V[l];i++)
+    {
+        
+        sum1+=class1[l].student[i].math;
+        sum2+=class1[l].student[i].Chinese;
+        sum3+=class1[l].student[i].english;
+        sum4+=class1[l].student[i].c;
+        sum5+=class1[l].student[i].PE;
+    }
+    printf("各科总成绩：\n");
+    printf("高数：%.2f\n",sum1);
+    printf("语文：%.2f\n",sum2);
+    printf("英语：%.2f\n",sum3);
+    printf("c语言：%.2f\n",sum4);
+    printf("体育：%.2f\n",sum5);
+    printf("各科平均分：\n");
+    printf("高数：%.2f\n",sum1/V[l]);
+    printf("语文：%.2f\n",sum2/V[l]);
+    printf("英语：%.2f\n",sum3/V[l]);
+    printf("c语言：%.2f\n",sum4/V[l]);
+    printf("体育：%.2f\n",sum5/V[l]);
+    system("pause");
+    system("cls");
+}
+int put_out(int a,int b)//输出函数
+{
+    printf("学生学号：%d\n",class1[a].student[b].id);
+    printf("学生姓名：%s\n",class1[a].student[b].name);
+    printf("学生高数成绩：%.2f\n",class1[a].student[b].math);
+    printf("学生语文成绩：%.2f\n",class1[a].student[b].Chinese);
+    printf("学生英语成绩：%.2f\n",class1[a].student[b].english);
+    printf("学生语言成绩：%.2f\n",class1[a].student[b].c);
+    printf("学生体育成绩：%.2f\n",class1[a].student[b].PE);
+    X(a,b);
+    printf("学生平均分：%.2f\n",class1[a].student[b].ave);
+    printf("学生总分：%.2f\n",class1[a].student[b].total);
+}
+int main()
+{
+    while(1)
+    {
+        int i=0;
+        start:
+        printf("        成绩管理\n");
+        printf("    ================\n");
+        printf("    1.输入学生成绩\n");
+        printf("    2.修改学生成绩\n");
+        printf("    3.删除学生成绩\n");
+        printf("    4.添加学生信息\n");
+        printf("    5.计算每位学生总成绩、平均分\n");
+        printf("    6.按学号或姓名查询学生成绩\n");
+        printf("    7.按班级查询学生成绩\n");
+        printf("    8.成绩排序\n");
+        printf("    9.按班级统计学科总分，平均分\n");
+        printf("    请选择（1~9，0：退出）\n");
+        scanf("%d",&i);
+        if(i<0||i>9)
+        {
+            system("cls");
+            printf("错误！请重新选择！！！\n");
+            goto start;
+            
+        }
+        switch(i)
+        {
+            case 1:
+            {
+                system("cls");
+                tyep_in();
+                break;
+            }
+            case 2:
+            {
+                system("cls");
+                alter();
+                break;
+            }
+            case 3:
+            {
+                system("cls");
+                delete1();
+                break;
+            }
+            case 4:
+            {
+                system("cls");
+                add();
+                break;
+            }
+            case 5:
+            {
+                system("cls");
+                count_total_ave();
+                break;
+            }
+            case 6:
+            {
+                system("cls");
+                Query_by_mame_or_number();
+                break;
+            }
+            case 7:
+            {
+                system("cls");
+                Enquiry_by_Class();
+                break;
+            }
+            case 8:
+            {
+                system("cls");
+                Results_soring();
+                break;
+            }
+            case 9:
+            {
+                system("cls");
+                statistics();
+                break;
+            }
+            case 0:
+            {
+                exit(1);
+            }
+        }
+    }
+}
